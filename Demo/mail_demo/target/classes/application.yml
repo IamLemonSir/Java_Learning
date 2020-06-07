@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 676382250@qq.com
+    password: ylbpbyfqdnpwbfhj
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            socketFactory: com.sun.mail.util.MailSSLSocketFactory
+
+
