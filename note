@@ -22,3 +22,15 @@
         }
         return ip;
     }
+
+Bug fix:
+1. springboot后台接收文件和对象的时候，会报Content type 'multipart/form-data;boundary=----WebKitF;charset=UTF-8' not supported错误
+==> 在上传文件的时候，spring框架会自动装配文件类型, 使用@RequestBody接收对象，所对应的content-type :application/json。所以当使用@RequestBody和文件上传的时候，会报错。
+解决办法一：
+去掉@RequestBody注解，使用@RequestParam接收参数
+
+解决办法二：
+去掉@RequestBody注解
+
+2. 当使用GetMapping作为请求类型时，使用对象接收参数，需要加@RequestBody注解才能获取参数，当前端传递来的参数为空时，后端会报request body missing的错误，此时需要给@RequestBody
+注解加上required=false，默认为true
