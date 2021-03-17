@@ -33,4 +33,4 @@ Bug fix:
 去掉@RequestBody注解
 
 2. 当使用GetMapping作为请求类型时，使用对象接收参数，需要加@RequestBody注解才能获取参数，当前端传递来的参数为空时，后端会报request body missing的错误，此时需要给@RequestBody
-注解加上required=false，默认为true
+注解加上required=false，默认为true；使用PostMapping接收参数时，可以不用加@RequestBody注解
