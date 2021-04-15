@@ -34,3 +34,46 @@ Bug fix:
 
 2. 当使用GetMapping作为请求类型时，使用对象接收参数，需要加@RequestBody注解才能获取参数，当前端传递来的参数为空时，后端会报request body missing的错误，此时需要给@RequestBody
 注解加上required=false，默认为true；使用PostMapping接收参数时，可以不用加@RequestBody注解
+
+
+===> Mybatis 映射
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkb.projectadmin.mapper.InternalRecommendationInfoMapper">
+    <sql id="Base_Column_List">
+        id, company_name, company_position, working_year, education, salary, company_scale, is_listed_company, company_logo,
+        company_tag, company_address, publish_time
+    </sql>
+
+
+    <resultMap id="infoResult" type="com.kkb.projectadmin.entity.InternalRecommendationInfo">
+        <id column="id" property="id"></id>
+        <result column="company_name" property="companyName"></result>
+        <result column="company_position" property="companyPosition"></result>
+        <result column="working_year" property="workingYear"></result>
+        <result column="company_scale" property="companyScale"></result>
+        <result column="is_listed_company" property="isListedCompany"></result>
+        <result column="company_logo" property="companyLogo"></result>
+        <result column="company_tag" property="companyTag"></result>
+        <result column="company_address" property="companyAddress"></result>
+        <result column="publish_time" property="publishTime"></result>
+        
+        通过association实现分布查询
+        首先按照id查询InternalRecommendationInfo的信息；
+        然后按照InternalRecommendationInfo信息中的id去查询InternalRecommendationPosition信息；==> 根据InternalRecommendationInfo中哪个信息去查InternalRecommendationPosition
+        的信息取决于InternalRecommendationPosition select语句中的查询条件对应InternalRecommendationInfo中的哪个字段
+        最后把查到的InternalRecommendationPosition信息设置到InternalRecommendationInfo信息中。
+        
+        一对一关联查询，properties属性代表InternalRecommendationInfo中持有的对象属性，select属性代表InternalRecommendationPosition的查询语句，id代表InternalRecommendationPosition查询条件
+        对应在InternalRecommendationInfo中的字段
+        <association property="internalRecommendationPosition"
+                     select="com.kkb.projectadmin.mapper.InternalRecommendationPositionMapper.getInternalRecommendationPosition"
+                     column="id"></association>
+    </resultMap>
+    <select id="getInternalRecommendationInfo" resultMap="infoResult">
+        select
+        <include refid="Base_Column_List"></include>
+        from internal_recommendation_info where id = #{id}
+    </select>
+</mapper>
