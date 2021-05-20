@@ -77,3 +77,6 @@ Bug fix:
         from internal_recommendation_info where id = #{id}
     </select>
 </mapper>
+
+==> spring 事务传播行为
+https://blog.csdn.net/pml18710973036/article/details/58607148
